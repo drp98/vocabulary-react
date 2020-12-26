@@ -1,0 +1,27 @@
+#test {
+    font-size: xx-large;
+}
+ 
+
+@media (min-width: 576px) {
+
+}
+
+
+@media (min-width: 768px) {
+    #width {
+        width: 50%
+    }
+}
+
+
+@media (min-width: 992px) {
+    #width {
+        width: 40%
+    }
+}
+
+
+@media (min-width: 1200px) {
+    
+}
