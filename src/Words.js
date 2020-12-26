@@ -3,22 +3,22 @@ import { Card, Button, ButtonGroup } from 'react-bootstrap'
 
 const initialWords = [
     {
-        word: '1 I mean it',
+        word: 'I mean it',
         translate: 'Я серьезно',
         transcription: '[ aɪ miːn ɪt]',
     },
     {
-        word: '2 Hello',
+        word: 'Hello',
         translate: 'Привет',
         transcription: '[ hello ]',
     },
     {
-        word: '3 go',
+        word: 'go',
         translate: 'идти',
         transcription: '[ g o ]',
     },
     {
-        word: '4 Bye',
+        word: 'Bye',
         translate: 'Пока',
         transcription: '[ b y e ]',
     },
@@ -27,55 +27,57 @@ const initialWords = [
 const Words = () => {
     const [ words, setWords ] = useState({})
     const [ currentWord, setCurrentWord ] = useState({})
-    const [index, setIndex] = useState(1)
-
-    // const next = () => {
-        
-        
-    //     setCurrentWord(state[id])
-    // }
+    const [index, setIndex] = useState(0)
+    const [isTranslated, setIsTranslated] = useState(false)
 
     useEffect(() => {
-        // fetch('https://jsonplaceholder.typicode.com/users')
-        //     .then(response => response.json())
-        //     .then(json => {
-                
-        //     })
-        setWords(initialWords)
-        setCurrentWord(initialWords[0])
-        
+        fetch('https://jsonplaceholder.typicode.com/users')
+            .then(response => response.json())
+            .then(json => {
+                setWords(initialWords)
+                setCurrentWord(initialWords[0])
+            })
     }, [])
 
+    useEffect(() => {
+        setCurrentWord(words[index])
+        setIsTranslated(false)
+    }, [index, words])
+
     const next = () => {
-        if (index < words.length ) {
-            setIndex(i => i + 1)
-            setCurrentWord(words[index])
-        }
-        else {
-            setIndex(1)
-            setCurrentWord(words[0])
-        }
+        ( index < words.length - 1 )
+        ? setIndex(index + 1)
+        : setIndex(0)
     }
+
+    const back = () => {
+        ( index > 0 )
+        ? setIndex(index - 1)
+        : setIndex(words.length - 1)
+    }
+
+    const translate = () => setIsTranslated(!isTranslated)
 
     return (
         <div className='container text-center mt-3 mb-3 p-0 w-50'>
             <Card>
                 <br />
-                <span>[ 1 / 20 ]</span>
+                <span>
+                    [ {index + 1} / {words?.length} ]
+                </span>
                 <br />
 
                 <span className='font-weight-bold display-4'>
-                    { index }
-                </span>
-
-                <span className='font-weight-bold display-4'>
-                    {/* {state?.userId} */}
                     {currentWord?.word}
                 </span>
                 <br />
-                <span className='h4 font-weight-light'>
+                <p
+                    className={`h4 font-weight-light ${
+                        isTranslated || 'invisible'
+                    }`}
+                >
                     {currentWord?.translate}
-                </span>
+                </p>
                 <br />
                 <span className='h3 font-weight-light'>
                     {currentWord?.transcription}
@@ -86,12 +88,20 @@ const Words = () => {
                 </Button>
             </Card>
 
-            <Button variant='outline-primary w-100 mb-2 mt-2 font-weight-bold'>
-                Translate
+            <Button
+                variant='outline-primary w-100 mb-2 mt-2 font-weight-bold'
+                onClick={() => translate()}
+            >
+                {isTranslated ? 'Hide' : 'Translate'}
             </Button>
             <br />
             <ButtonGroup className='text-center w-100'>
-                <Button variant='outline-danger font-weight-bold'>Back</Button>
+                <Button
+                    variant='outline-danger font-weight-bold'
+                    onClick={() => back()}
+                >
+                    Back
+                </Button>
                 <Button
                     variant='outline-success font-weight-bold'
                     onClick={() => next()}
