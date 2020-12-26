@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Card, Button, ButtonGroup } from 'react-bootstrap'
 import './Words.css'
+import photo from './photo.jpg'
 
 const initialWords = [
     {
@@ -19,9 +20,9 @@ const initialWords = [
         transcription: '[ g o ]',
     },
     {
-        word: 'Bye',
-        translate: 'Пока',
-        transcription: '[ b y e ]',
+        word: 'Drunk',
+        translate: 'Пьяна',
+        transcription: '[ drʌŋk ]',
     },
 ]
 
@@ -66,6 +67,8 @@ const Words = () => {
                 <p className='mt-3'>
                     [ {index + 1} / {words?.length} ]
                 </p>
+
+                {index === 3 ? (<img id="rose" className='container text-center' title='my-img' src={photo} alt='my-img' />) : '' }
 
                 <p className='font-weight-bold display-4'>
                     {currentWord?.word}
