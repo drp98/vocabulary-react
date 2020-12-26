@@ -24,6 +24,11 @@ const initialWords = [
         translate: 'Пьяна',
         transcription: '[ drʌŋk ]',
     },
+    {
+        word: 'Lollipop',
+        translate: 'Леденец',
+        transcription: '[ ˈlɑːlɪpɑːp ]',
+    },
 ]
 
 const Words = () => {
@@ -69,6 +74,7 @@ const Words = () => {
                 </p>
 
                 {index === 3 ? (<img id="rose" className='container text-center' title='my-img' src={photo} alt='my-img' />) : '' }
+                {index === 4 ? (<img  className='container text-center' title='my-img' src={"https://pbs.twimg.com/media/Eb_9U8gWkAQa9YN.jpg"} alt='my-img' />) : '' }
 
                 <p className='font-weight-bold display-4'>
                     {currentWord?.word}
