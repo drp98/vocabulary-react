@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Card, Button, ButtonGroup } from 'react-bootstrap'
 import './Words.css'
-import photo from './photo.jpg'
 
 const initialWords = [
     {
@@ -20,15 +19,10 @@ const initialWords = [
         transcription: '[ g o ]',
     },
     {
-        word: 'Drunk',
-        translate: 'Пьяна',
-        transcription: '[ drʌŋk ]',
-    },
-    {
-        word: 'Lollipop',
-        translate: 'Леденец',
-        transcription: '[ ˈlɑːlɪpɑːp ]',
-    },
+        word: 'Dog',
+        translate: 'Собака',
+        transcription: '[ dog ]',
+    }
 ]
 
 const Words = () => {
@@ -72,9 +66,6 @@ const Words = () => {
                 <p className='mt-3'>
                     [ {index + 1} / {words?.length} ]
                 </p>
-
-                {index === 3 ? (<img id="rose" className='container text-center' title='my-img' src={photo} alt='my-img' />) : '' }
-                {index === 4 ? (<img  className='container text-center' title='my-img' src={"https://pbs.twimg.com/media/Eb_9U8gWkAQa9YN.jpg"} alt='my-img' />) : '' }
 
                 <p className='font-weight-bold display-4'>
                     {currentWord?.word}
