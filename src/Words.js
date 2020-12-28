@@ -1,29 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Card, Button, ButtonGroup } from 'react-bootstrap'
+import { Spinner } from './Spinner'
 import './Words.css'
 
-const initialWords = [
-    {
-        word: 'I mean it',
-        translate: 'Я серьезно',
-        transcription: '[ aɪ miːn ɪt]',
-    },
-    {
-        word: 'Hello',
-        translate: 'Привет',
-        transcription: '[ hello ]',
-    },
-    {
-        word: 'go',
-        translate: 'идти',
-        transcription: '[ g o ]',
-    },
-    {
-        word: 'Dog',
-        translate: 'Собака',
-        transcription: '[ dog ]',
-    }
-]
+const fetchedWord = {
+    content: '0000',
+    translate: '0000',
+    transcription: '[ 0000 ]',
+}
 
 const Words = () => {
     const [words, setWords] = useState({})
@@ -32,27 +16,37 @@ const Words = () => {
     const [isTranslated, setIsTranslated] = useState(false)
     const wordsRef = useRef({})
 
+    const [word, setWord] = useState({})
+    const [length, setLength] = useState(null)
+    const [isLoaded, setIsLoaded] = useState(false)
+
     useEffect(() => {
-        fetch('https://jsonplaceholder.typicode.com/users')
+        fetch('https://jsonplaceholder.typicode.com/users/1')
             .then(response => response.json())
             .then(json => {
-                setWords(initialWords)
-                setCurrentWord(initialWords[0])
-                wordsRef.current = initialWords
+                setWord(json)
+                setLength(10)
+                setIsLoaded(true)
             })
     }, [])
 
     useEffect(() => {
-        setCurrentWord(wordsRef.current[index])
+        fetch(`https://jsonplaceholder.typicode.com/users/${index + 1}`)
+            .then(response => response.json())
+            .then(json => {
+                setWord(json)
+                setIsLoaded(true)
+            })
+        setIsLoaded(false)
         setIsTranslated(false)
     }, [index])
 
     const next = () => {
-        index < words.length - 1 ? setIndex(index + 1) : setIndex(0)
+        index < length - 1 ? setIndex(index + 1) : setIndex(0)
     }
 
     const back = () => {
-        index > 0 ? setIndex(index - 1) : setIndex(words.length - 1)
+        index > 0 ? setIndex(index - 1) : setIndex(length - 1)
     }
 
     const translate = () => setIsTranslated(!isTranslated)
@@ -64,15 +58,15 @@ const Words = () => {
         >
             <Card>
                 <p className='mt-3'>
-                    [ {index + 1} / {words?.length} ]
+                    [ {index + 1} / {length} ]
                 </p>
 
-                <p className='font-weight-bold display-4'>
-                    {currentWord?.word}
-                </p>
+                <div className='font-weight-bold display-4'>
+                    {word.name}
+                </div>
 
                 <p className='h3 font-weight-light mt-4'>
-                    {currentWord?.transcription}
+                    {word.phone}
                 </p>
 
                 <p
@@ -81,7 +75,7 @@ const Words = () => {
                         isTranslated || 'invisible'
                     }`}
                 >
-                    {currentWord?.translate}
+                    {word.email}
                 </p>
 
                 <Button variant='outline-warning font-weight-bold mt-4'>
