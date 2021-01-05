@@ -33,7 +33,7 @@ const Words = () => {
     const [length, setLength] = useState(null)
     const [isLoaded, setIsLoaded] = useState(false)
 
-    const [startTransition, isPending] = React.useTransition({ timeoutMs: 100 })
+    const [startTransition, isPending] = React.useTransition({ timeoutMs: 250 })
     const [resource, setResource] = useState(initialResource)
 
     // useEffect(() => {
