@@ -1,13 +1,26 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, {
+    useState,
+    useEffect,
+    useRef,
+    useTransition,
+    Suspense,
+} from 'react'
 import { Card, Button, ButtonGroup } from 'react-bootstrap'
 import { Spinner } from './Spinner'
 import './Words.css'
+import Test from './Test'
+
+import { fetchProfileData } from './fakeApi'
+
+const initialResource = fetchProfileData(1)
 
 const fetchedWord = {
     content: '0000',
     translate: '0000',
     transcription: '[ 0000 ]',
 }
+
+//const Test = React.lazy(() => import('./Test'))
 
 const Words = () => {
     const [words, setWords] = useState({})
@@ -20,29 +33,40 @@ const Words = () => {
     const [length, setLength] = useState(null)
     const [isLoaded, setIsLoaded] = useState(false)
 
-    useEffect(() => {
-        fetch('https://jsonplaceholder.typicode.com/users/1')
-            .then(response => response.json())
-            .then(json => {
-                setWord(json)
-                setLength(10)
-                setIsLoaded(true)
-            })
-    }, [])
+    const [startTransition, isPending] = React.useTransition({ timeoutMs: 100 })
+    const [resource, setResource] = useState(initialResource)
 
-    useEffect(() => {
-        fetch(`https://jsonplaceholder.typicode.com/users/${index + 1}`)
-            .then(response => response.json())
-            .then(json => {
-                setWord(json)
-                setIsLoaded(true)
-            })
-        setIsLoaded(false)
-        setIsTranslated(false)
-    }, [index])
+    // useEffect(() => {
+    //     fetch('https://jsonplaceholder.typicode.com/users/1')
+    //         .then(response => response.json())
+    //         .then(json => {
+    //             setWord(json)
+    //             setLength(10)
+    //             setIsLoaded(true)
+    //         })
+    // }, [])
+
+    // useEffect(() => {
+    //     fetch(`https://jsonplaceholder.typicode.com/users/${index + 1}`)
+    //         .then(response => response.json())
+    //         .then(json => {
+    //             setWord(json)
+    //             setIsLoaded(true)
+    //         })
+    //     setIsLoaded(false)
+    //     setIsTranslated(false)
+    // }, [index])
 
     const next = () => {
         index < length - 1 ? setIndex(index + 1) : setIndex(0)
+    }
+
+    function getNextId(id) {
+        return id >= 10 ? 1 : id + 1
+    }
+
+    function getPrevId(id) {
+        return id <= 1 ? 10 : id - 1
     }
 
     const back = () => {
@@ -57,26 +81,15 @@ const Words = () => {
             className='container-sm text-center mt-3 mb-3 p-0 pr-3 pl-3'
         >
             <Card>
-                <p className='mt-3'>
-                    [ {index + 1} / {length} ]
-                </p>
+                <>
+                    <p className='mt-3'>
+                        [ {resource.userId} / {10} ]
+                    </p>
 
-                <div className='font-weight-bold display-4'>
-                    {word.name}
-                </div>
-
-                <p className='h3 font-weight-light mt-4'>
-                    {word.phone}
-                </p>
-
-                <p
-                    id='test'
-                    className={`h4 font-weight-light mt-4 ${
-                        isTranslated || 'invisible'
-                    }`}
-                >
-                    {word.email}
-                </p>
+                    <Suspense fallback={<Spinner />}>
+                        <Test resource={resource} isTranslated={isTranslated} />
+                    </Suspense>
+                </>
 
                 <Button variant='outline-warning font-weight-bold mt-4'>
                     Already know
@@ -93,13 +106,23 @@ const Words = () => {
             <ButtonGroup className='text-center w-100'>
                 <Button
                     variant='outline-danger font-weight-bold'
-                    onClick={() => back()}
+                    onClick={() => {
+                        const prevWordId = getPrevId(resource.userId)
+                        setResource(fetchProfileData(prevWordId))
+                        setIsTranslated(false)
+                    }}
                 >
                     Back
                 </Button>
                 <Button
                     variant='outline-success font-weight-bold'
-                    onClick={() => next()}
+                    onClick={() => {
+                        startTransition(() => {
+                            const nextWordId = getNextId(resource.userId)
+                            setResource(fetchProfileData(nextWordId))
+                            setIsTranslated(false)
+                        })
+                    }}
                 >
                     Next
                 </Button>

@@ -1,12 +1,16 @@
-import React from 'react'
+import React, {Suspense} from 'react'
 import NavBar from './NavBar'
-import Words from './Words'
+import {Spinner} from './Spinner'
+
+const Words = React.lazy(() => import('./Words'))
 
 const App = () => {
     return (
         <>
             <NavBar />
-            <Words />
+            <Suspense fallback={<Spinner />}>
+                <Words />
+            </Suspense>
         </>
     )
 }
