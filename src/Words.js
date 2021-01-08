@@ -6,60 +6,26 @@ import React, {
     Suspense,
 } from 'react'
 import { Card, Button, ButtonGroup } from 'react-bootstrap'
-import { Spinner } from './Spinner'
+import Loader from './Loader'
 import './Words.css'
 import Test from './Test'
+import { Spinner } from './Spinner'
+import { ButtonSpinner } from './ButtonSpinner'
 
 import { fetchProfileData } from './fakeApi'
 
 const initialResource = fetchProfileData(1)
 
-const fetchedWord = {
-    content: '0000',
-    translate: '0000',
-    transcription: '[ 0000 ]',
-}
-
-//const Test = React.lazy(() => import('./Test'))
-
 const Words = () => {
-    const [words, setWords] = useState({})
-    const [currentWord, setCurrentWord] = useState({})
-    const [index, setIndex] = useState(0)
     const [isTranslated, setIsTranslated] = useState(false)
-    const wordsRef = useRef({})
 
-    const [word, setWord] = useState({})
-    const [length, setLength] = useState(null)
-    const [isLoaded, setIsLoaded] = useState(false)
-
-    const [startTransition, isPending] = React.useTransition({ timeoutMs: 250 })
+    const [startTransitionBack, isPendingBack] = React.useTransition({
+        timeoutMs: 3000,
+    })
+    const [startTransitionNext, isPendingNext] = React.useTransition({
+        timeoutMs: 3000,
+    })
     const [resource, setResource] = useState(initialResource)
-
-    // useEffect(() => {
-    //     fetch('https://jsonplaceholder.typicode.com/users/1')
-    //         .then(response => response.json())
-    //         .then(json => {
-    //             setWord(json)
-    //             setLength(10)
-    //             setIsLoaded(true)
-    //         })
-    // }, [])
-
-    // useEffect(() => {
-    //     fetch(`https://jsonplaceholder.typicode.com/users/${index + 1}`)
-    //         .then(response => response.json())
-    //         .then(json => {
-    //             setWord(json)
-    //             setIsLoaded(true)
-    //         })
-    //     setIsLoaded(false)
-    //     setIsTranslated(false)
-    // }, [index])
-
-    const next = () => {
-        index < length - 1 ? setIndex(index + 1) : setIndex(0)
-    }
 
     function getNextId(id) {
         return id >= 10 ? 1 : id + 1
@@ -69,10 +35,6 @@ const Words = () => {
         return id <= 1 ? 10 : id - 1
     }
 
-    const back = () => {
-        index > 0 ? setIndex(index - 1) : setIndex(length - 1)
-    }
-
     const translate = () => setIsTranslated(!isTranslated)
 
     return (
@@ -80,7 +42,7 @@ const Words = () => {
             id='width'
             className='container-sm text-center mt-3 mb-3 p-0 pr-3 pl-3'
         >
-            <Card>
+            <Card className='h-100'>
                 <>
                     <p className='mt-3'>
                         [ {resource.userId} / {10} ]
@@ -107,24 +69,42 @@ const Words = () => {
                 <Button
                     variant='outline-danger font-weight-bold'
                     onClick={() => {
-                        const prevWordId = getPrevId(resource.userId)
-                        setResource(fetchProfileData(prevWordId))
-                        setIsTranslated(false)
+                        startTransitionBack(() => {
+                            const prevWordId = getPrevId(resource.userId)
+                            setResource(fetchProfileData(prevWordId))
+                            setIsTranslated(false)
+                        })
                     }}
+                    disabled={isPendingBack}
                 >
-                    Back
+                    {isPendingBack ? (
+                        <>
+                            {'Back '}
+                            <ButtonSpinner />
+                        </>
+                    ) : (
+                        'Back'
+                    )}
                 </Button>
                 <Button
                     variant='outline-success font-weight-bold'
                     onClick={() => {
-                        startTransition(() => {
+                        startTransitionNext(() => {
                             const nextWordId = getNextId(resource.userId)
                             setResource(fetchProfileData(nextWordId))
                             setIsTranslated(false)
                         })
                     }}
+                    disabled={isPendingNext}
                 >
-                    Next
+                    {isPendingNext ? (
+                        <>
+                            {'Next '}
+                            <ButtonSpinner />
+                        </>
+                    ) : (
+                        'Next'
+                    )}
                 </Button>
             </ButtonGroup>
         </div>
