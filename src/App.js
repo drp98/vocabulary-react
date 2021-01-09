@@ -1,16 +1,15 @@
 import React, { Suspense } from 'react'
 import NavBar from './components/NavBar/NavBar'
-import MainLoader from './components/Loaders/MainLoader/MainLoader'
+import Words from './components/Words/Words'
 
-const Words = React.lazy(() => import('./components/Words/Words'))
+// import MainLoader from './components/Loaders/MainLoader/MainLoader'
+// const Words = React.lazy(() => import('./components/Words/Words'))
 
 const App = () => {
     return (
         <>
-            <Suspense fallback={<MainLoader />}>
-                <NavBar />
-                <Words />
-            </Suspense>
+            <NavBar />
+            <Words />
         </>
     )
 }
