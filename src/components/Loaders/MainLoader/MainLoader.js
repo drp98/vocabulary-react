@@ -1,7 +1,7 @@
 import React from 'react'
-import './Loader.css'
+import '././MainLoader.css'
 
-const Loader = () => (
+const MainLoader = () => (
     <div className='html'>
         <div className='body'>
             <div className='loader'>
@@ -45,4 +45,4 @@ const Loader = () => (
     </div>
 )
 
-export default Loader
+export default MainLoader

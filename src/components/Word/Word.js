@@ -1,8 +1,6 @@
 import React from 'react'
-import { Suspense } from 'react'
-import Loader from './Loader'
 
-const Test = ({ resource, isTranslated }) => {
+const Word = ({ resource, isTranslated }) => {
     const word = resource.word.read()
     return (
         <>
@@ -21,4 +19,4 @@ const Test = ({ resource, isTranslated }) => {
     )
 }
 
-export default Test
+export default Word

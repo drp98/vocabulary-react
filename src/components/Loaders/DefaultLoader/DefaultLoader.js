@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const Spinner = () => (
+export const DefaultLoader = () => (
     <div
         className='spinner-border text-dark text-center font-size-small'
         role='status'

@@ -1,15 +1,11 @@
-export function fetchProfileData(userId) {
-    let userPromise = fetchUser(userId)
+export function fetchWordData(wordId) {
+    let wordPromise = fetchWord(wordId)
     return {
-        userId,
-        word: wrapPromise(userPromise),
+        wordId,
+        word: wrapPromise(wordPromise),
     }
 }
 
-// Suspense integrations like Relay implement
-// a contract like this to integrate with React.
-// Real implementations can be significantly more complex.
-// Don't copy-paste this into your project!
 function wrapPromise(promise) {
     let status = 'pending'
     let result
@@ -36,8 +32,8 @@ function wrapPromise(promise) {
     }
 }
 
-export function fetchUser(userId) {
-    return fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
+export function fetchWord(wordId) {
+    return fetch(`https://jsonplaceholder.typicode.com/users/${wordId}`)
         .then(response => response.json())
         .then(json => json)
 }
