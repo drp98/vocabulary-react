@@ -20,10 +20,10 @@ const Words = () => {
     const [isTranslated, setIsTranslated] = useState(false)
 
     const [startTransitionBack, isPendingBack] = React.useTransition({
-        timeoutMs: 3000,
+        timeoutMs: 2500,
     })
     const [startTransitionNext, isPendingNext] = React.useTransition({
-        timeoutMs: 3000,
+        timeoutMs: 2500,
     })
     const [resource, setResource] = useState(initialResource)
 
@@ -87,7 +87,7 @@ const Words = () => {
                     )}
                 </Button>
                 <Button
-                    variant='outline-success font-weight-bold'
+                    variant='outline-success font-weight-bold position-relative'
                     onClick={() => {
                         startTransitionNext(() => {
                             const nextWordId = getNextId(resource.userId)
