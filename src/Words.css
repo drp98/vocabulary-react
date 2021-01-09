@@ -35,21 +35,32 @@ button:active {
 
 }
 
+@media (max-width: 768px) {
+    #width {
+        height: 75vh;
+    }
+}
+
 
 @media (min-width: 768px) {
     #width {
-        width: 50%
+        width: 70%;
+        height: 50vh;
     }
 }
 
 
 @media (min-width: 992px) {
     #width {
-        width: 40%
+        width: 60%;
+        height: 50vh;
     }
 }
 
 
 @media (min-width: 1200px) {
-    
+    #width {
+        width: 50%;
+        height: 50vh;
+    }
 }
