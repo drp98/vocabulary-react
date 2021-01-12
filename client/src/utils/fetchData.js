@@ -33,7 +33,7 @@ function wrapPromise(promise) {
 }
 
 export function fetchWord(wordId) {
-    return fetch(`https://jsonplaceholder.typicode.com/users/${wordId}`)
+    return fetch(`/api/words/${wordId}`)
         .then(response => response.json())
         .then(json => json)
 }

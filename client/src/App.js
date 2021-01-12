@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import NavBar from './components/NavBar/NavBar'
 import Words from './components/Words/Words'
 

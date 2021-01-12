@@ -57,9 +57,40 @@ const Words = () => {
                         delay={{ show: 0, hide: 0 }}
                         overlay={renderTooltip}
                     >
-                        <a href='/'>
-                            <i className='bi bi-bookmark-star h2'></i>
-                        </a>
+                        <div className='dropdown'>
+                            <a
+                                href='#'
+                                role='button'
+                                id='dropdownMenuLink'
+                                data-bs-toggle='dropdown'
+                                aria-expanded='false'
+                            >
+                                <i className='bi bi-bookmark-star h2'></i>
+                            </a>
+
+                            <ul
+                                className='dropdown-menu'
+                                aria-labelledby='dropdownMenuLink'
+                            >
+                                <li>
+                                    <a className='dropdown-item' href='/'>
+                                        Already know
+                                    </a>
+                                </li>
+                                <li>
+                                    <a className='dropdown-item' href='/'>
+                                        Breaking bad
+                                    </a>
+                                </li>
+                                <li>
+                                    <input type='text' />
+                                    <i className='bi bi-folder-plus add-test-rename h2'></i>
+                                    <a className='dropdown-item' href='/'>
+                                        Add new category
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </OverlayTrigger>
 
                     <p className='mt-3'>
