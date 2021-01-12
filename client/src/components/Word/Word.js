@@ -2,7 +2,7 @@ import React from 'react'
 
 const Word = ({ resource, isTranslated }) => {
     const { word, transcription, translate } = resource.word.read()
-    
+
     return (
         <>
             <div className='font-weight-bold display-4'>{word}</div>

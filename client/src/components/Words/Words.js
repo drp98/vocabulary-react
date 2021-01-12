@@ -1,6 +1,7 @@
 import React, {
     useState,
     Suspense,
+    useEffect
 } from 'react'
 import {
     Card,
@@ -18,10 +19,17 @@ import { fetchWordData } from '../../utils/fetchData'
 const initialResource = fetchWordData(1)
 
 const Words = () => {
+    const [length, setLength] = useState(null)
+    
+    useEffect(() => {
+        fetch('/api/words/length')
+            .then(response => response.json())
+            .then(json => setLength(json))
+    }, [])
 
     const [isTranslated, setIsTranslated] = useState(false)
     const [resource, setResource] = useState(initialResource)
-
+    
     const [startTransitionBack, isPendingBack] = React.useTransition({
         timeoutMs: 2500,
     })
@@ -32,11 +40,11 @@ const Words = () => {
     const translate = () => setIsTranslated(!isTranslated)
 
     const getNextId = id => (
-        id >= 10 ? 1 : id + 1
+        id >= length ? 1 : id + 1
     )
 
     const getPrevId = id => (
-        id <= 1 ? 10 : id - 1
+        id <= 1 ? length : id - 1
     )
 
     const renderTooltip = props => (
@@ -94,7 +102,7 @@ const Words = () => {
                     </OverlayTrigger>
 
                     <p className='mt-3'>
-                        [ {resource.wordId} / {10} ]
+                        [ {resource.wordId} / {length} ]
                     </p>
 
                     <Suspense fallback={<DefaultLoader />}>
