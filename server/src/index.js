@@ -5,19 +5,20 @@ import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 
 import words from './routes/words'
+import auth from './routes/auth'
 
 const app = express()
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.use(express.json({ extended: true }))
 
 dotenv.config({
     path: path.join(__dirname, '.env'),
 })
 
-// app.use(bodyParser.json())
-// app.use(bodyParser.urlencoded({ extended: false }))
-
 // Routes
 app.use('/api/words', words)
-// app.use('/api/auth', auth)
+app.use('/api/auth', auth)
 // app.use('/api/films', films)
 // app.use('/api/authfilms', authfilms)
 

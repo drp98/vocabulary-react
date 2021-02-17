@@ -1,4 +1,5 @@
 import React from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import NavBar from './components/NavBar/NavBar'
 import Words from './components/Words/Words'
 
@@ -7,10 +8,10 @@ import Words from './components/Words/Words'
 
 const App = () => {
     return (
-        <>
+        <Router>
             <NavBar />
-            <Words />
-        </>
+            <Route path='/' component={Words} />
+        </Router>
     )
 }
 
